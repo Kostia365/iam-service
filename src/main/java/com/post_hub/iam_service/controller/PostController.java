@@ -1,31 +1,35 @@
 package com.post_hub.iam_service.controller;
 
-import com.post_hub.iam_service.service.impl.PostServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import com.post_hub.iam_service.model.constants.ApiErrorsMessage;
+import com.post_hub.iam_service.model.constants.ApiLogMessage;
+import com.post_hub.iam_service.model.entity.Post;
+import com.post_hub.iam_service.repositories.PostRepository;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
 
+@Slf4j
 @RestController
-@RequestMapping("/posts")
+@RequiredArgsConstructor
+@RequestMapping("${end.point.posts}")
 public class PostController {
-  private final PostServiceImpl postService;
-  @Autowired
-  public PostController(PostServiceImpl postService) {
-    this.postService = postService;
-  }
-  @PostMapping("/create")
-  public ResponseEntity<String> createPost(@RequestBody Map<String, Object> requestBody){
-    String title = (String) requestBody.get("title");
-    String content = (String) requestBody.get("content");
+  private final PostRepository postRepository;
 
-    String postContent = "title" + title + "\nContent " + content+"\n";
-    postService.createPost(postContent);
-    return new ResponseEntity<>("Post created:"+title, HttpStatus.OK);
+  @GetMapping("${end.point.id}")
+  public ResponseEntity<Post> getPostByID(
+      @PathVariable(name = "id") Integer postId) {
+    log.info(ApiLogMessage.POST_INFO_BY_ID.getMessage(postId));
+    return postRepository.findById(postId)
+        .map(ResponseEntity::ok)
+        .orElseGet(() -> {
+          log.info(ApiErrorsMessage.POST_NOT_FOUND.getMessage(postId));
+          return ResponseEntity.notFound().build();
+        });
   }
 }
