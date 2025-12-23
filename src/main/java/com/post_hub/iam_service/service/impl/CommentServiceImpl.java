@@ -1,20 +1,25 @@
-package com.post_hub.iam_service.service.impl;
-
-import com.post_hub.iam_service.service.CommentService;
-import org.springframework.context.annotation.Primary;
-import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
-
-@Service
-@Primary
-public class CommentServiceImpl implements CommentService {
-  private final List<String> comments = new ArrayList<>();
-
-  @Override
-  public void createComment(String commentContent) {
-    comments.add(commentContent);
-    System.out.println("default Comment: " + commentContent.toUpperCase());
-  }
-}
+//package com.post_hub.iam_service.service.impl;
+//
+//import com.post_hub.iam_service.model.constants.ApiErrorsMessage;
+//import com.post_hub.iam_service.model.dto.post.PostDto;
+//import com.post_hub.iam_service.model.entity.Post;
+//import com.post_hub.iam_service.model.exeption.NotFoundExeption;
+//import com.post_hub.iam_service.model.response.IamResponse;
+//import com.post_hub.iam_service.repositories.PostRepository;
+//import com.post_hub.iam_service.service.PostService;
+//import lombok.RequiredArgsConstructor;
+//import org.springframework.stereotype.Service;
+//
+//
+//@Service
+//@RequiredArgsConstructor
+//public class CommentServiceImpl implements PostService {
+//  private final PostRepository postRepository;
+//
+//  @Override
+//  public IamResponse<PostDto> getbyId(int postId) {
+//    Post post = postRepository.findById(postId)
+//        .orElseThrow(() -> new NotFoundExeption(ApiErrorsMessage.POST_NOT_FOUND.getMessage(postId)));
+//    return null;
+//  }
+//}

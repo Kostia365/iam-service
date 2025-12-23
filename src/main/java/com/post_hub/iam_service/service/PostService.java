@@ -1,6 +1,9 @@
 package com.post_hub.iam_service.service;
 
-public interface PostService {
-  void createPost(String postContent);
+import com.post_hub.iam_service.model.dto.post.PostDto;
+import com.post_hub.iam_service.model.response.IamResponse;
+import jakarta.validation.constraints.NotNull;
 
+public interface PostService {
+  IamResponse<PostDto> getbyId(@NotNull int postId);
 }
