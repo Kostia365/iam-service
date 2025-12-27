@@ -22,4 +22,9 @@ public class Post {
   private LocalDateTime created_at;
   @Column(nullable = false, columnDefinition = "integer default 0")
   private int likes = 0;
+
+  @PrePersist
+  protected void onCreate() {
+    this.created_at = LocalDateTime.now();
+  }
 }
