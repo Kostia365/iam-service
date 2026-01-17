@@ -20,6 +20,8 @@ public class Post {
   private String content;
   @Column(nullable = false, updatable = false)
   private LocalDateTime created_at;
+  @Column(nullable = false)
+  private LocalDateTime updated_at;
   @Column(nullable = false, columnDefinition = "integer default 0")
   private int likes = 0;
 

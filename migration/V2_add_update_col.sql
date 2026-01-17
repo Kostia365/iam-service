@@ -1,0 +1,2 @@
+ALTEr TABLE v1_iam_service.posts
+    ADD COLUMN updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP;
