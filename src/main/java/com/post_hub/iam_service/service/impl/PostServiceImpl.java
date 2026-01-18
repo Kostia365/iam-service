@@ -14,7 +14,6 @@ import com.post_hub.iam_service.service.PostService;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PostMapping;
 
 import java.time.LocalDateTime;
 
@@ -27,7 +26,7 @@ public class PostServiceImpl implements PostService {
 
   @Override
   public IamResponse<PostDto> getbyId(@NotNull int postId) {
-    Post post = postRepository.findById(postId)
+    Post post = postRepository.findByIdAndDeletedFalse(postId)
         .orElseThrow(() -> new NotFoundExeption(ApiErrorsMessage.POST_NOT_FOUND.getMessage(postId)));
     PostDto postDto = postMapper.toPostDto(post);
     return IamResponse.createSuccessFul(postDto);
@@ -46,7 +45,7 @@ public class PostServiceImpl implements PostService {
 
   @Override
   public IamResponse<PostDto> updatePost(@NotNull int postId, @NotNull UpdatePostRequest request) {
-    Post post = postRepository.findById(postId)
+    Post post = postRepository.findByIdAndDeletedFalse(postId)
         .orElseThrow(() -> new NotFoundExeption(ApiErrorsMessage.POST_NOT_FOUND.getMessage(postId)));
 
     postMapper.updatePost(post, request);
@@ -56,4 +55,11 @@ public class PostServiceImpl implements PostService {
     return IamResponse.createSuccessFul(postDto);
   }
 
+  @Override
+  public void softDeletePost(int postId) {
+    Post post = postRepository.findByIdAndDeletedFalse(postId)
+        .orElseThrow(() -> new NotFoundExeption(ApiErrorsMessage.POST_NOT_FOUND.getMessage(postId)));
+    post.setDeleted(true);
+    postRepository.save(post);
+  }
 }
