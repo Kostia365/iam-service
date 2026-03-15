@@ -8,20 +8,24 @@ import com.post_hub.iam_service.model.entity.Post;
 import com.post_hub.iam_service.model.exeption.DataExistExeption;
 import com.post_hub.iam_service.model.exeption.NotFoundExeption;
 import com.post_hub.iam_service.model.request.post.NewPostRequest;
+import com.post_hub.iam_service.model.request.post.PostSearchRequest;
 import com.post_hub.iam_service.model.request.post.UpdatePatchRequest;
 import com.post_hub.iam_service.model.request.post.UpdatePostRequest;
 import com.post_hub.iam_service.model.response.IamResponse;
 import com.post_hub.iam_service.model.response.PaginationResponse;
-import com.post_hub.iam_service.repositories.PostRepository;
+import com.post_hub.iam_service.repository.PostRepository;
+import com.post_hub.iam_service.repository.criteries.PostSearchCriteria;
 import com.post_hub.iam_service.service.PostService;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDateTime;
+
 
 @Service
 @RequiredArgsConstructor
@@ -65,6 +69,23 @@ public class PostServiceImpl implements PostService {
   public IamResponse<PostDto> updatePatch(@NotNull int postId, @NotNull UpdatePatchRequest updatePatchRequest) {
     postRepository.updateTitleById(updatePatchRequest.getTitle(), postId);
     return IamResponse.createSuccessFul(null);
+  }
+
+  @Override
+  public IamResponse<PaginationResponse<PostSearchDto>> searchPost(PostSearchRequest request, Pageable pageable) {
+    Specification<Post> specification = new PostSearchCriteria(request);
+    Page<PostSearchDto> posts = postRepository.findAll(specification, pageable)
+        .map(postMapper::toPostSearchDto);
+    PaginationResponse<PostSearchDto> response = PaginationResponse.<PostSearchDto>builder()
+        .content(posts.getContent())
+        .pagination(PaginationResponse.Pagination.builder()
+            .total(posts.getTotalElements())
+            .limit(pageable.getPageSize())
+            .page(posts.getNumber() + 1)
+            .pages(posts.getTotalPages())
+            .build())
+        .build();
+    return IamResponse.createSuccessFul(response);
   }
 
 

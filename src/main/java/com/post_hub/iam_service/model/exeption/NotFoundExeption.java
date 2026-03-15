@@ -6,7 +6,7 @@ import static lombok.AccessLevel.PRIVATE;
 
 @NoArgsConstructor(access = PRIVATE)
 public class NotFoundExeption extends RuntimeException {
-    public NotFoundExeption(String message) {
-      super(message);
+  public NotFoundExeption(String message) {
+    super(message);
   }
 }

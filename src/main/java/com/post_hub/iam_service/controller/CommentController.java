@@ -26,7 +26,7 @@ public class CommentController {
   }
 
 
-  @PostMapping("/addDefaultComment")
+  @PostMapping("/addDefaultComment/{id}")
   public ResponseEntity<String> addDefaultComment(@RequestBody Map<String, Object> requestBody
   ) {
     String content = (String) requestBody.get("content");
