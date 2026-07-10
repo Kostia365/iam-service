@@ -1,7 +1,6 @@
 package com.post_hub.iam_service.controller;
 
 import com.post_hub.iam_service.service.CommentService;
-import com.post_hub.iam_service.service.impl.TimeSetedCommentServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -19,7 +18,7 @@ public class CommentController {
   private final CommentService defaultcommentService;
   private final CommentService advancCommentService;
   @Autowired
-  public CommentController(CommentService defaultcommentService,
+  public CommentController(@Qualifier("commentServiceImpl") CommentService defaultcommentService,
                            @Qualifier("advancedCommentService") CommentService advancCommentService) {
     this.defaultcommentService = defaultcommentService;
     this.advancCommentService = advancCommentService;

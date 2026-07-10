@@ -1,5 +1,6 @@
 package com.post_hub.iam_service.model.response;
 
+import com.post_hub.iam_service.model.dto.user.UserDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,5 +20,9 @@ public class IamResponse<P extends Serializable> implements Serializable {
 
   public static <P extends Serializable> IamResponse<P> createSuccessFul(P payload) {
     return new IamResponse<>(StringUtils.EMPTY, payload, true);
+  }
+
+  public static <P extends Serializable> IamResponse<UserDto> updatedSuccessFul(UserDto userDto) {
+    return new IamResponse<>(StringUtils.EMPTY, userDto, true);
   }
 }
